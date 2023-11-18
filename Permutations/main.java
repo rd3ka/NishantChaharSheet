@@ -1,35 +1,40 @@
 import java.util.*;
+import java.util.stream.Collectors;
 
 class main {
-  
-  public static void swap(int []nums, int x, int y) {
-    nums[x] ^= nums[y];
-    nums[y] ^= nums[x];
-    nums[x] ^= nums[y];
-  }
 
-  public static List < List <Integer>> permutation(int []nums, List <List <Integer>>result, int index) {
-    if (index == nums.length) {
-      result.add(Arrays.stream(nums)
-                        .boxed()
-                        .collect(Collectors.toList()));
-      return;
+    static void swap(int []nums, int x, int y) {
+        nums[x] ^= nums[y];
+        nums[y] ^= nums[x];
+        nums[x] ^= nums[y];
     }
-    for(int i = index; i < nums.length; i++) {
-      if (i != index && nums[i] == nums[index]) 
-        continue;
-      swap(nums, i, index);
-      permute(nums, index + 1);
+
+    static void permutation(int []nums, List <List<Integer>> permutations, int index) {
+        
+        if (index == nums.length - 1) {
+            permutations.add(Arrays.stream(nums)
+                                    .boxed()
+                                    .collect(Collectors.toList()));
+            return;
+        }
+
+        for(int i = index; i < nums.length; i++) {
+            if (i != index && nums[i] == nums[index])
+                continue; /* omitting duplicate permutations */
+            swap(nums, index, i);
+            permutation(nums, permutations, index + 1);
+            swap(nums, index, i);
+        }
     }
-  }
 
-  public static void permute(int []nums) {
-    List < List <Integer>> result = new ArrayList <new ArrayList <>> ();
-    permutation(nums, result, 0);
-  }
+    static List <List <Integer>> permute(int []nums) {
+        List < List <Integer> > permutations = new ArrayList <> ();
+        permutation(nums, permutations, 0);
+        return permutations;
+    }
 
-  public static void main(String []args) {
-    int nums[] = new int[]{1, 2, 3};
-    permute(nums);
-  }
+    public static void main(String []args) {
+        int []nums = new int[]{1, 2, 3};
+        System.out.println(permute(nums));
+    }
 }

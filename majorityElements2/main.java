@@ -1,6 +1,5 @@
 import java.util.*;
 
-
 class main {
 
     static List <Integer> majority_elements(int []nums) {
